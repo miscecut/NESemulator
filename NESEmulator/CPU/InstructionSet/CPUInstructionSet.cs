@@ -1,8 +1,10 @@
 ﻿using NESEmulator.CPU.InstructionSet.AddressingModes.AddressingModeImplementations;
 using NESEmulator.CPU.InstructionSet.Operations.BranchOperations;
 using NESEmulator.CPU.InstructionSet.Operations.ControlOperations;
+using NESEmulator.CPU.InstructionSet.Operations.LoadOperations;
 using NESEmulator.CPU.InstructionSet.Operations.OperationImplementation;
 using NESEmulator.CPU.InstructionSet.Operations.StackOperations;
+using NESEmulator.CPU.Registers;
 using System.Collections.Generic;
 
 namespace NESEmulator.CPU
@@ -571,6 +573,22 @@ namespace NESEmulator.CPU
                 RequiredClockCycles = 7,
                 AddressingMode = new AbsoluteXIndexed(),
                 Operation = new Shift(false, true)
+            };
+            _instructions[0x81] = new Instruction
+            {
+                Opcode = 0x81,
+                Name = "STA ($aa,X)",
+                RequiredClockCycles = 6,
+                AddressingMode = new IndexedXIndirect(),
+                Operation = new Store(Register.A)
+            };
+            _instructions[0x84] = new Instruction
+            {
+                Opcode = 0x84,
+                Name = "STY $aa,Y",
+                RequiredClockCycles = 3,
+                AddressingMode = new ZeroPage(),
+                Operation = new Store(Register.Y)
             };
         }
 
