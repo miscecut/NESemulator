@@ -1,6 +1,7 @@
 ﻿using NESEmulator.Bus;
 using NESEmulator.CPU.InstructionSet.AddressingModes;
 using NESEmulator.CPU.InstructionSet.Operations;
+using NESEmulator.CPU.Registers;
 
 namespace NESEmulator.CPU
 {
@@ -17,7 +18,7 @@ namespace NESEmulator.CPU
         //How many clock cycles are needed to do this instruction?
         public int RequiredClockCycles { get; set; }
         
-        public int Execute(IBus bus, CPURegisters registers)
+        public int Execute(IBus bus, ICPURegisters registers)
         {
             if(AddressingMode is null)
                 return RequiredClockCycles + Operation.OperationImmediate(bus, registers);

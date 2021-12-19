@@ -1,4 +1,5 @@
 ﻿using NESEmulator.Bus;
+using NESEmulator.CPU.Registers;
 
 namespace NESEmulator.CPU.InstructionSet.Operations.ControlOperations
 {
@@ -11,22 +12,24 @@ namespace NESEmulator.CPU.InstructionSet.Operations.ControlOperations
             _pushProgramCounter = pushProgramCounter;
         }
 
-        public int OperationImmediate(IBus bus, CPURegisters registers)
+        public int OperationImmediate(IBus bus, ICPURegisters registers)
         {
             return 0;
         }
 
-        public int OperationWithAddress(IBus bus, CPURegisters registers, ushort address)
+        public int OperationWithAddress(IBus bus, ICPURegisters registers, ushort address)
         {
             if (_pushProgramCounter)
             {
-                registers.ProgramCounter--;
+                registers.DecrementProgramCounter();
                 //the program counter is pushed to the stack
-                bus.CPUWrite((ushort)(0x0100 + registers.StackPointer--), BytesUtils.GetHiByte(registers.ProgramCounter));
-                bus.CPUWrite((ushort)(0x0100 + registers.StackPointer--), BytesUtils.GetLoByte(registers.ProgramCounter));
+                bus.CPUWrite((ushort)(0x0100 + registers.GetStackPointer()), BytesUtils.GetHiByte(registers.GetProgramCounter()));
+                registers.DecrementStackPointer();
+                bus.CPUWrite((ushort)(0x0100 + registers.GetStackPointer()), BytesUtils.GetLoByte(registers.GetProgramCounter()));
+                registers.DecrementStackPointer();
             }
 
-            registers.ProgramCounter = address; //the program counter becomes the address provided
+            registers.SetProgramCounter(address); //the program counter becomes the address provided
 
             return 0;
         }

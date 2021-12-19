@@ -1,24 +1,28 @@
 ﻿using NESEmulator.Bus;
+using NESEmulator.CPU.Registers;
 
 namespace NESEmulator.CPU.InstructionSet.Operations.ControlOperations
 {
     public class ReturnFromInterrupt : IOperation
     {
-        public int OperationImmediate(IBus bus, CPURegisters registers)
+        public int OperationImmediate(IBus bus, ICPURegisters registers)
         {
-            var statusBeforeInterrupt = bus.CPURead((ushort)(++registers.StackPointer + 0x0100));
-            var loProgramCounter = bus.CPURead((ushort)(++registers.StackPointer + 0x0100));
-            var hiProgramCounter = bus.CPURead((ushort)(++registers.StackPointer + 0x0100));
+            registers.IncrementStackPointer();
+            var statusBeforeInterrupt = bus.CPURead((ushort)(registers.GetStackPointer() + 0x0100));
+            registers.IncrementStackPointer();
+            var loProgramCounter = bus.CPURead((ushort)(registers.GetStackPointer() + 0x0100));
+            registers.IncrementStackPointer();
+            var hiProgramCounter = bus.CPURead((ushort)(registers.GetStackPointer() + 0x0100));
             var programCounter = BytesUtils.CombineBytes(hiProgramCounter, loProgramCounter);
 
-            registers.Status = statusBeforeInterrupt;
-            registers.ProgramCounter = programCounter;
+            registers.SetStatus(statusBeforeInterrupt);
+            registers.SetProgramCounter(programCounter);
             registers.SetFlag(StatusRegisterFlags.BRKCommand, false);
 
             return 0;
         }
 
-        public int OperationWithAddress(IBus bus, CPURegisters registers, ushort address)
+        public int OperationWithAddress(IBus bus, ICPURegisters registers, ushort address)
         {
             return 0;
         }

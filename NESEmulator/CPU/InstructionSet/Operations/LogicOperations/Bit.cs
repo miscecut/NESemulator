@@ -1,11 +1,13 @@
-﻿namespace NESEmulator.CPU.InstructionSet.Operations.OperationImplementation
+﻿using NESEmulator.CPU.Registers;
+
+namespace NESEmulator.CPU.InstructionSet.Operations.OperationImplementation
 {
     //performs an AND between the accumulator and the operand but does not store the result, only sets some flags
     public class Bit : RegistersOperation
     {
-        protected override int Operation(CPURegisters registers, byte operand)
+        protected override int Operation(ICPURegisters registers, byte operand)
         {
-            var andOperationResult = (byte)(registers.A & operand);
+            var andOperationResult = (byte)(registers.GetRegister(Register.A) & operand);
 
             //this operation sets/unsets the Z, V, N flags
             registers.SetFlag(StatusRegisterFlags.Zero, andOperationResult == 0x00);

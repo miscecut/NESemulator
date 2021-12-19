@@ -548,7 +548,30 @@ namespace NESEmulator.CPU
                 RequiredClockCycles = 2,
                 Operation = new ChangeFlag(StatusRegisterFlags.IRQDisable, true)
             };
-
+            _instructions[0x79] = new Instruction
+            {
+                Opcode = 0x79,
+                Name = "ADC $aaaa,Y",
+                RequiredClockCycles = 4,
+                AddressingMode = new AbsoluteYIndexed(),
+                Operation = new AddWithCarry()
+            };
+            _instructions[0x7D] = new Instruction
+            {
+                Opcode = 0x7D,
+                Name = "ADC $aaaa,X",
+                RequiredClockCycles = 4,
+                AddressingMode = new AbsoluteXIndexed(),
+                Operation = new AddWithCarry()
+            };
+            _instructions[0x7E] = new Instruction
+            {
+                Opcode = 0x7E,
+                Name = "ROR $aaaa,X",
+                RequiredClockCycles = 7,
+                AddressingMode = new AbsoluteXIndexed(),
+                Operation = new Shift(false, true)
+            };
         }
 
         public Instruction GetInstruction(byte opcode)

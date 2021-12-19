@@ -1,4 +1,5 @@
 ﻿using NESEmulator.Bus;
+using NESEmulator.CPU.Registers;
 
 namespace NESEmulator.CPU.InstructionSet.Operations.IncrementDecrementOperations
 {
@@ -11,12 +12,12 @@ namespace NESEmulator.CPU.InstructionSet.Operations.IncrementDecrementOperations
             _increment = increment;
         }
 
-        public int OperationImmediate(IBus bus, CPURegisters registers) //it should be impossibile, an address has to be provided
+        public int OperationImmediate(IBus bus, ICPURegisters registers) //it should be impossibile, an address has to be provided
         {
             return 0;
         }
 
-        public int OperationWithAddress(IBus bus, CPURegisters registers, ushort address)
+        public int OperationWithAddress(IBus bus, ICPURegisters registers, ushort address)
         {
             var oldValue = bus.CPURead(address);
             var newValue = _increment ? (byte)(oldValue + 1) : (byte)(oldValue - 1);

@@ -1,18 +1,19 @@
 ﻿using NESEmulator.Bus;
+using NESEmulator.CPU.Registers;
 
 namespace NESEmulator.CPU
 {
     public class NMOS6502 : ICPU
     {
-        private readonly CPURegisters _registers;
+        private readonly ICPURegisters _registers;
         private readonly IBus _bus;
         private readonly CPUInstructionSet _instructionSet;
         private int _remainingCycles;
 
-        public NMOS6502(IBus bus)
+        public NMOS6502(IBus bus, ICPURegisters registers)
         {
             _bus = bus;
-            _registers = new CPURegisters();
+            _registers = registers;
             _instructionSet = new CPUInstructionSet();
             _remainingCycles = 0;
         }
@@ -49,7 +50,7 @@ namespace NESEmulator.CPU
             _registers.Reset();
             var loAddress = _bus.CPURead(0xFFFC);
             var hiAddress = _bus.CPURead(0xFFFD);
-            _registers.ProgramCounter = BytesUtils.CombineBytes(hiAddress, loAddress);
+            _registers.SetProgramCounter(BytesUtils.CombineBytes(hiAddress, loAddress));
         }
     }
 }

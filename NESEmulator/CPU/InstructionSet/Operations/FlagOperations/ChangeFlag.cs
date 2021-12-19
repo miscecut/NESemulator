@@ -1,4 +1,5 @@
 ﻿using NESEmulator.Bus;
+using NESEmulator.CPU.Registers;
 
 namespace NESEmulator.CPU.InstructionSet.Operations.OperationImplementation
 {
@@ -13,13 +14,13 @@ namespace NESEmulator.CPU.InstructionSet.Operations.OperationImplementation
             _set = set;
         }
 
-        public int OperationImmediate(IBus bus, CPURegisters registers)
+        public int OperationImmediate(IBus bus, ICPURegisters registers)
         {
             registers.SetFlag(_flag, _set);
             return 0;
         }
 
-        public int OperationWithAddress(IBus bus, CPURegisters registers, ushort address)
+        public int OperationWithAddress(IBus bus, ICPURegisters registers, ushort address)
         {
             registers.SetFlag(_flag, _set);
             return 0;

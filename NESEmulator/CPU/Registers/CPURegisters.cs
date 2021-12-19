@@ -1,19 +1,15 @@
-﻿namespace NESEmulator.CPU
+﻿using NESEmulator.CPU.Registers;
+
+namespace NESEmulator.CPU
 {
-    public class CPURegisters
+    public class CPURegisters : ICPURegisters
     {
-        //Accumulator (1 Byte)
-        public byte A { get; set; }
-        //X Register (1 Byte)
-        public byte X { get; set; }
-        //Y Register (1 Byte)
-        public byte Y { get; set; }
-        //Program counter (2 Bytes)
-        public ushort ProgramCounter { get; set; }
-        //Stack pointer (1 Byte)
-        public byte StackPointer { get; set; }
-        //P Register: 8 flags
-        public byte Status { get; set; }
+        private byte A;
+        private byte X;
+        private byte Y;
+        private ushort ProgramCounter;
+        private byte StackPointer;
+        private byte Status;
 
         public CPURegisters()
         {
@@ -51,6 +47,78 @@
                 Status = (byte)(Status | (byte)flag);
             else
                 Status = (byte)(Status & (byte)~flag);
+        }
+
+        public byte GetRegister(Register register)
+        {
+            if (register == Register.A)
+                return A;
+            if (register == Register.X)
+                return X;
+            return Y;
+        }
+
+        public void SetRegister(Register register, byte value)
+        {
+            if (register == Register.A)
+                A = value;
+            if (register == Register.X)
+                X = value;
+            Y = value;
+        }
+
+        public ushort GetProgramCounter()
+        {
+            return ProgramCounter;
+        }
+
+        public void SetProgramCounter(ushort programCounter)
+        {
+            ProgramCounter = programCounter;
+        }
+
+        public byte GetStackPointer()
+        {
+            return StackPointer;
+        }
+
+        public void SetStackPointer(byte stackPointer)
+        {
+            StackPointer = stackPointer;
+        }
+
+        public void IncrementStackPointer()
+        {
+            StackPointer++;
+        }
+
+        public void DecrementStackPointer()
+        {
+            StackPointer--;
+        }
+
+        public byte GetStatus()
+        {
+            return Status;
+        }
+
+        public void SetStatus(byte status)
+        {
+            Status = status;
+        }
+
+        public void DecrementProgramCounter()
+        {
+            ProgramCounter--;
+        }
+
+        public void IncrementRegister(Register register)
+        {
+            if (register == Register.A)
+                A++;
+            if (register == Register.X)
+                X++;
+            Y++;
         }
     }
 }

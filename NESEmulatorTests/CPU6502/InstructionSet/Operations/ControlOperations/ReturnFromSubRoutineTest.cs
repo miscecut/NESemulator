@@ -14,15 +14,15 @@ namespace NESEmulatorTests.CPU6502.InstructionSet.Operations.ControlOperations
             var bus = new BusWithOnlyRAM();
             var registers = new CPURegisters();
 
-            registers.ProgramCounter = 0x019B;
-            registers.StackPointer = 0x05;
+            registers.SetProgramCounter(0x019B);
+            registers.SetStackPointer(0x05);
             bus.CPUWrite(0x0106, 0x33);
             bus.CPUWrite(0x0107, 0x22);
 
             new ReturnFromSubRoutine().OperationImmediate(bus, registers);
 
-            Assert.AreEqual(registers.ProgramCounter, 0x2234);
-            Assert.AreEqual(registers.StackPointer, 0x07);
+            Assert.AreEqual(registers.GetProgramCounter(), 0x2234);
+            Assert.AreEqual(registers.GetStackPointer(), 0x07);
         }
     }
 }

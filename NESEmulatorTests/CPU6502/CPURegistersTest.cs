@@ -10,13 +10,13 @@ namespace NESEmulatorTests.CPU6502
         public void TestProgramCounter()
         {
             var registers = new CPURegisters();
-            var initialProgramCounter = registers.ProgramCounter;
+            var initialProgramCounter = registers.GetProgramCounter();
             registers.IncrementProgramCounter();
-            var newProgramCounter = registers.ProgramCounter;
+            var newProgramCounter = registers.GetProgramCounter();
             Assert.IsTrue(newProgramCounter - initialProgramCounter == 0x0001);
             newProgramCounter = registers.GetProgramCounterAndIncrement();
             Assert.IsTrue(newProgramCounter - initialProgramCounter == 0x0001);
-            newProgramCounter = registers.ProgramCounter;
+            newProgramCounter = registers.GetProgramCounter();
             Assert.IsTrue(newProgramCounter - initialProgramCounter == 0x0002);
         }
     }

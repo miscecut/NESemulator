@@ -1,14 +1,17 @@
-﻿namespace NESEmulator.CPU.InstructionSet.Operations.OperationImplementation
+﻿using NESEmulator.CPU.Registers;
+
+namespace NESEmulator.CPU.InstructionSet.Operations.OperationImplementation
 {
     public class And : RegistersOperation
     {
-        protected override int Operation(CPURegisters registers, byte operand)
+        protected override int Operation(ICPURegisters registers, byte operand)
         {
-            registers.A = (byte)(registers.A & operand);
+            var newAccumulatorValue = (byte)(registers.GetRegister(Register.A) & operand);
+            registers.SetRegister(Register.A, newAccumulatorValue);
 
             //this operation checks the Z & N flags
-            registers.SetFlag(StatusRegisterFlags.Zero, registers.A == 0x00);
-            registers.SetFlag(StatusRegisterFlags.Negative, BytesUtils.GetMSB(registers.A));
+            registers.SetFlag(StatusRegisterFlags.Zero, registers.GetRegister(Register.A) == 0x00);
+            registers.SetFlag(StatusRegisterFlags.Negative, BytesUtils.GetMSB(registers.GetRegister(Register.A)));
 
             return 0;
         }

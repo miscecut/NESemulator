@@ -1,10 +1,11 @@
 ﻿using NESEmulator.Bus;
+using NESEmulator.CPU.Registers;
 
 namespace NESEmulator.CPU.InstructionSet.AddressingModes.AddressingModeImplementations
 {
     public class AbsoluteIndirect : IAddressingMode
     {
-        public AddressingModeResult Fetch(IBus bus, CPURegisters registers)
+        public AddressingModeResult Fetch(IBus bus, ICPURegisters registers)
         {
             var loAddressPointer = bus.CPURead(registers.GetProgramCounterAndIncrement());
             var hiAddressPointer = bus.CPURead(registers.GetProgramCounterAndIncrement());

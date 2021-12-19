@@ -1,4 +1,5 @@
 ﻿using NESEmulator.Bus;
+using NESEmulator.CPU.Registers;
 
 namespace NESEmulator.CPU.InstructionSet.Operations.OperationImplementation
 {
@@ -13,33 +14,34 @@ namespace NESEmulator.CPU.InstructionSet.Operations.OperationImplementation
             _rotate = rotate;
         }
 
-        public int OperationImmediate(IBus bus, CPURegisters registers)
+        public int OperationImmediate(IBus bus, ICPURegisters registers)
         {
             bool carry;
             if (_left)
             {
-                carry = BytesUtils.GetMSB(registers.A);
-                registers.A = (byte)(registers.A << 1);
+                carry = BytesUtils.GetMSB(registers.GetRegister(Register.A));
+                var newAccumulatorValue = (byte)(registers.GetRegister(Register.A) << 1);
+                registers.SetRegister(Register.A, newAccumulatorValue);
                 if (_rotate && registers.GetFlag(StatusRegisterFlags.Carry))
-                    registers.A += 0b00000001;
+                    registers.IncrementRegister(Register.A);
             }
             else
             {
-                carry = BytesUtils.GetLSB(registers.A);
-                registers.A = (byte)(registers.A >> 1);
+                carry = BytesUtils.GetLSB(registers.GetRegister(Register.A));
+                var newAccumulatorValue = (byte)(registers.GetRegister(Register.A) >> 1);
                 if (_rotate && registers.GetFlag(StatusRegisterFlags.Carry))
-                    registers.A += 0b10000000;
+                    registers.SetRegister(Register.A, (byte)(registers.GetRegister(Register.A) + 0b10000000));
             }
 
             //this operation checks the Z, N, C flags
-            registers.SetFlag(StatusRegisterFlags.Zero, registers.A == 0x00);
+            registers.SetFlag(StatusRegisterFlags.Zero, registers.GetRegister(Register.A) == 0x00);
             registers.SetFlag(StatusRegisterFlags.Carry, carry);
-            registers.SetFlag(StatusRegisterFlags.Negative, BytesUtils.GetMSB(registers.A));
+            registers.SetFlag(StatusRegisterFlags.Negative, BytesUtils.GetMSB(registers.GetRegister(Register.A)));
 
             return 0;
         }
 
-        public int OperationWithAddress(IBus bus, CPURegisters registers, ushort address)
+        public int OperationWithAddress(IBus bus, ICPURegisters registers, ushort address)
         {
             var operand = bus.CPURead(address);
 

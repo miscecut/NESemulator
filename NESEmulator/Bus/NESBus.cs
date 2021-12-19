@@ -14,7 +14,7 @@ namespace NESEmulator.Bus
 
         public NESBus()
         {
-            _cpu = new NMOS6502(this);
+            _cpu = new NMOS6502(this, new CPURegisters());
             _ram = new MirroringRAM(); //0x0000 - 0x1FFF
         }
 

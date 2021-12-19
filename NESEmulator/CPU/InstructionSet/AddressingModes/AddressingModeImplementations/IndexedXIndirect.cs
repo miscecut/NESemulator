@@ -1,14 +1,16 @@
 ﻿using NESEmulator.Bus;
+using NESEmulator.CPU.Registers;
 
 namespace NESEmulator.CPU.InstructionSet.AddressingModes.AddressingModeImplementations
 {
     public class IndexedXIndirect : IAddressingMode
     {
-        public AddressingModeResult Fetch(IBus bus, CPURegisters registers)
+        public AddressingModeResult Fetch(IBus bus, ICPURegisters registers)
         {
+            var xValue = registers.GetRegister(Register.X);
             var loPointerloAddress = bus.CPURead(registers.GetProgramCounterAndIncrement());
-            var loPointerAddress = BytesUtils.ZeroPageSum(loPointerloAddress, registers.X);
-            var hiPointerAddress = BytesUtils.ZeroPageSum(loPointerloAddress, (byte)(registers.X + 1));
+            ushort loPointerAddress = BytesUtils.ZeroPageSum(loPointerloAddress, xValue);
+            var hiPointerAddress = BytesUtils.ZeroPageSum(loPointerloAddress, (byte)(xValue + 1));
 
             var loPointer = bus.CPURead(loPointerAddress);
             var hiPointer = bus.CPURead(hiPointerAddress);
