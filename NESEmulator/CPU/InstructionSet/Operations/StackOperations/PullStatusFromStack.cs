@@ -8,7 +8,7 @@ namespace NESEmulator.CPU.InstructionSet.Operations.StackOperations
         protected override int OperationImplied(IBus bus, ICPURegisters registers)
         {
             registers.IncrementStackPointer();
-            var status = bus.CPURead((ushort)(registers.GetStackPointer() + 0x0100));
+            var status = bus.CPURead((ushort)(registers.GetRegister(Register.StackPointer) + 0x0100));
             registers.SetStatus(status);
             registers.SetFlag(StatusRegisterFlags.Unused, true); //the U flag must always be set
 

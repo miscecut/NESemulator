@@ -6,12 +6,12 @@ namespace NESEmulator.CPU.InstructionSet.Operations.OperationImplementation
     {
         protected override int Operation(ICPURegisters registers, byte operand)
         {
-            var newAccumulatorValue = (byte)(registers.GetRegister(Register.A) | operand);
-            registers.SetRegister(Register.A, newAccumulatorValue);
+            var newAccumulatorValue = (byte)(registers.GetRegister(Register.Accumulator) | operand);
+            registers.SetRegister(Register.Accumulator, newAccumulatorValue);
 
             //this operation checks the Z & N flags
-            registers.SetFlag(StatusRegisterFlags.Zero, registers.GetRegister(Register.A) == 0x00);
-            registers.SetFlag(StatusRegisterFlags.Negative, BytesUtils.GetMSB(registers.GetRegister(Register.A)));
+            registers.SetFlag(StatusRegisterFlags.Zero, registers.GetRegister(Register.Accumulator) == 0x00);
+            registers.SetFlag(StatusRegisterFlags.Negative, BytesUtils.GetMSB(registers.GetRegister(Register.Accumulator)));
 
             return 0;
         }

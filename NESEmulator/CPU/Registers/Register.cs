@@ -2,8 +2,9 @@
 {
     public enum Register
     {
-        A,
+        Accumulator,
         X,
-        Y
+        Y,
+        StackPointer
     }
 }

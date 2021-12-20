@@ -7,8 +7,6 @@
         public void IncrementRegister(Register register);
         public byte GetStatus();
         public void SetStatus(byte status);
-        public byte GetStackPointer();
-        public void SetStackPointer(byte stackPointer);
         public void IncrementStackPointer();
         public void DecrementStackPointer();
         public ushort GetProgramCounter();

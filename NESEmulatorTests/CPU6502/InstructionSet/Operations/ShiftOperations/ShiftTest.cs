@@ -15,12 +15,12 @@ namespace NESEmulatorTests.CPU6502.InstructionSet.Operations.ShiftOperations
             var bus = new BusWithOnlyRAM();
             var registers = new CPURegisters();
 
-            registers.SetRegister(Register.A, 0b11011100);
+            registers.SetRegister(Register.Accumulator, 0b11011100);
             registers.SetFlag(StatusRegisterFlags.Carry, true);
 
             new Shift(true, false).OperationImmediate(bus, registers);
 
-            Assert.AreEqual(registers.GetRegister(Register.A), 0b10111000);
+            Assert.AreEqual(registers.GetRegister(Register.Accumulator), 0b10111000);
             Assert.IsFalse(registers.GetFlag(StatusRegisterFlags.Zero));
             Assert.IsTrue(registers.GetFlag(StatusRegisterFlags.Negative));
             Assert.IsTrue(registers.GetFlag(StatusRegisterFlags.Carry));
@@ -31,12 +31,12 @@ namespace NESEmulatorTests.CPU6502.InstructionSet.Operations.ShiftOperations
             var bus = new BusWithOnlyRAM();
             var registers = new CPURegisters();
 
-            registers.SetRegister(Register.A, 0b01101110);
+            registers.SetRegister(Register.Accumulator, 0b01101110);
             registers.SetFlag(StatusRegisterFlags.Carry, true);
 
             new Shift(true, true).OperationImmediate(bus, registers);
 
-            Assert.AreEqual(registers.GetRegister(Register.A), 0b11011101);
+            Assert.AreEqual(registers.GetRegister(Register.Accumulator), 0b11011101);
             Assert.IsFalse(registers.GetFlag(StatusRegisterFlags.Zero));
             Assert.IsTrue(registers.GetFlag(StatusRegisterFlags.Negative));
             Assert.IsFalse(registers.GetFlag(StatusRegisterFlags.Carry));

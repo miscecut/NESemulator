@@ -7,7 +7,7 @@ namespace NESEmulator.CPU.InstructionSet.Operations.OperationImplementation
     {
         protected override int Operation(ICPURegisters registers, byte operand)
         {
-            var andOperationResult = (byte)(registers.GetRegister(Register.A) & operand);
+            var andOperationResult = (byte)(registers.GetRegister(Register.Accumulator) & operand);
 
             //this operation sets/unsets the Z, V, N flags
             registers.SetFlag(StatusRegisterFlags.Zero, andOperationResult == 0x00);

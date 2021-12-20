@@ -13,7 +13,7 @@ namespace NESEmulator.CPU.InstructionSet.Operations.StackOperations
             registers.SetFlag(StatusRegisterFlags.BRKCommand, true);
             registers.SetFlag(StatusRegisterFlags.Unused, true); // in theory, this is always 1 anyway
             //and then it saves the status un the stack, which is decreased
-            bus.CPUWrite((ushort)(0x0100 + registers.GetStackPointer()), registers.GetStatus());
+            bus.CPUWrite((ushort)(0x0100 + registers.GetRegister(Register.StackPointer)), registers.GetStatus());
             registers.DecrementStackPointer();
             //and it resets the previous B flag
             registers.SetFlag(StatusRegisterFlags.BRKCommand, previousBreakFlagStatus);

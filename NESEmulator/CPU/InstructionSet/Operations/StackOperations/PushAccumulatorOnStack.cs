@@ -8,7 +8,7 @@ namespace NESEmulator.CPU.InstructionSet.Operations.StackOperations
         protected override int OperationImplied(IBus bus, ICPURegisters registers)
         {
             //It saves the accumulator un the stack, which is decreased
-            bus.CPUWrite((ushort)(0x0100 + registers.GetStackPointer()), registers.GetRegister(Register.A));
+            bus.CPUWrite((ushort)(0x0100 + registers.GetRegister(Register.StackPointer)), registers.GetRegister(Register.Accumulator));
             registers.DecrementStackPointer();
 
             return 0;

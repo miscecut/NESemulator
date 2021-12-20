@@ -14,14 +14,14 @@ namespace NESEmulator.CPU.InstructionSet.Operations.ControlOperations
             //and it saves the program counter on the stack
             var loProgramCounter = BytesUtils.GetLoByte(registers.GetProgramCounter());
             var hiProgramCounter = BytesUtils.GetHiByte(registers.GetProgramCounter());
-            bus.CPUWrite((ushort)(0x0100 + registers.GetStackPointer()), loProgramCounter); //save the loPointer to the stack
+            bus.CPUWrite((ushort)(0x0100 + registers.GetRegister(Register.StackPointer)), loProgramCounter); //save the loPointer to the stack
             registers.DecrementStackPointer();
-            bus.CPUWrite((ushort)(0x0100 + registers.GetStackPointer()), hiProgramCounter); //save the hiPointer to the stack
+            bus.CPUWrite((ushort)(0x0100 + registers.GetRegister(Register.StackPointer)), hiProgramCounter); //save the hiPointer to the stack
             registers.DecrementStackPointer();
             //It sets the B flag to true
             registers.SetFlag(StatusRegisterFlags.BRKCommand, true);
             //And it pushes the status register on the stack
-            bus.CPUWrite((ushort)(0x0100 + registers.GetStackPointer()), registers.GetStatus()); //save the hiPointer to the stack
+            bus.CPUWrite((ushort)(0x0100 + registers.GetRegister(Register.StackPointer)), registers.GetStatus()); //save the hiPointer to the stack
             registers.DecrementStackPointer();
             //And it resets the B flag to false
             registers.SetFlag(StatusRegisterFlags.BRKCommand, false);

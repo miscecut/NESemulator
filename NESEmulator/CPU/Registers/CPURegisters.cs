@@ -51,20 +51,25 @@ namespace NESEmulator.CPU
 
         public byte GetRegister(Register register)
         {
-            if (register == Register.A)
+            if (register == Register.Accumulator)
                 return A;
             if (register == Register.X)
                 return X;
-            return Y;
+            if (register == Register.Y)
+                return Y;
+            return StackPointer;
         }
 
         public void SetRegister(Register register, byte value)
         {
-            if (register == Register.A)
+            if (register == Register.Accumulator)
                 A = value;
-            if (register == Register.X)
+            else if (register == Register.X)
                 X = value;
-            Y = value;
+            else if (register == Register.Y)
+                Y = value;
+            else
+                StackPointer = value;
         }
 
         public ushort GetProgramCounter()
@@ -75,16 +80,6 @@ namespace NESEmulator.CPU
         public void SetProgramCounter(ushort programCounter)
         {
             ProgramCounter = programCounter;
-        }
-
-        public byte GetStackPointer()
-        {
-            return StackPointer;
-        }
-
-        public void SetStackPointer(byte stackPointer)
-        {
-            StackPointer = stackPointer;
         }
 
         public void IncrementStackPointer()
@@ -114,7 +109,7 @@ namespace NESEmulator.CPU
 
         public void IncrementRegister(Register register)
         {
-            if (register == Register.A)
+            if (register == Register.Accumulator)
                 A++;
             if (register == Register.X)
                 X++;

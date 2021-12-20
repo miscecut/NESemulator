@@ -19,24 +19,24 @@ namespace NESEmulator.CPU.InstructionSet.Operations.OperationImplementation
             bool carry;
             if (_left)
             {
-                carry = BytesUtils.GetMSB(registers.GetRegister(Register.A));
-                var newAccumulatorValue = (byte)(registers.GetRegister(Register.A) << 1);
-                registers.SetRegister(Register.A, newAccumulatorValue);
+                carry = BytesUtils.GetMSB(registers.GetRegister(Register.Accumulator));
+                var newAccumulatorValue = (byte)(registers.GetRegister(Register.Accumulator) << 1);
+                registers.SetRegister(Register.Accumulator, newAccumulatorValue);
                 if (_rotate && registers.GetFlag(StatusRegisterFlags.Carry))
-                    registers.IncrementRegister(Register.A);
+                    registers.IncrementRegister(Register.Accumulator);
             }
             else
             {
-                carry = BytesUtils.GetLSB(registers.GetRegister(Register.A));
-                var newAccumulatorValue = (byte)(registers.GetRegister(Register.A) >> 1);
+                carry = BytesUtils.GetLSB(registers.GetRegister(Register.Accumulator));
+                var newAccumulatorValue = (byte)(registers.GetRegister(Register.Accumulator) >> 1);
                 if (_rotate && registers.GetFlag(StatusRegisterFlags.Carry))
-                    registers.SetRegister(Register.A, (byte)(registers.GetRegister(Register.A) + 0b10000000));
+                    registers.SetRegister(Register.Accumulator, (byte)(newAccumulatorValue + 0b10000000));
             }
 
             //this operation checks the Z, N, C flags
-            registers.SetFlag(StatusRegisterFlags.Zero, registers.GetRegister(Register.A) == 0x00);
+            registers.SetFlag(StatusRegisterFlags.Zero, registers.GetRegister(Register.Accumulator) == 0x00);
             registers.SetFlag(StatusRegisterFlags.Carry, carry);
-            registers.SetFlag(StatusRegisterFlags.Negative, BytesUtils.GetMSB(registers.GetRegister(Register.A)));
+            registers.SetFlag(StatusRegisterFlags.Negative, BytesUtils.GetMSB(registers.GetRegister(Register.Accumulator)));
 
             return 0;
         }
@@ -46,7 +46,7 @@ namespace NESEmulator.CPU.InstructionSet.Operations.OperationImplementation
             var operand = bus.CPURead(address);
 
             bool carry;
-            byte shiftedOperand = 0x00;
+            byte shiftedOperand;
             if (_left)
             {
                 carry = BytesUtils.GetMSB(operand);

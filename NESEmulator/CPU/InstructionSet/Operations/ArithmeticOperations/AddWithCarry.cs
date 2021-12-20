@@ -8,19 +8,19 @@ namespace NESEmulator.CPU.InstructionSet.Operations.OperationImplementation
         {
             var carryAddend = registers.GetFlag(StatusRegisterFlags.Carry) ? 1 : 0;
 
-            ushort sum = (ushort)(registers.GetRegister(Register.A) + operand + carryAddend);
-            var oldAccumulatorValue = registers.GetRegister(Register.A);
-            registers.SetRegister(Register.A, BytesUtils.GetLoByte(sum));
+            ushort sum = (ushort)(registers.GetRegister(Register.Accumulator) + operand + carryAddend);
+            var oldAccumulatorValue = registers.GetRegister(Register.Accumulator);
+            registers.SetRegister(Register.Accumulator, BytesUtils.GetLoByte(sum));
 
             //Setup logic operators for Overflow Flag
             bool a = BytesUtils.GetMSB(oldAccumulatorValue); //sign of the accumulator before sum (first addend)
             bool m = BytesUtils.GetMSB(operand); //sign of the addend (second addend)
-            bool r = BytesUtils.GetMSB(registers.GetRegister(Register.A)); //sign of the result
+            bool r = BytesUtils.GetMSB(registers.GetRegister(Register.Accumulator)); //sign of the result
             bool v = (a ^ r) & !(a ^ m);
 
             //This operations sets or unsets the Z, N, C, V flags
             registers.SetFlag(StatusRegisterFlags.Carry, sum > 0x00FF);
-            registers.SetFlag(StatusRegisterFlags.Zero, registers.GetRegister(Register.A) == 0x00);
+            registers.SetFlag(StatusRegisterFlags.Zero, registers.GetRegister(Register.Accumulator) == 0x00);
             registers.SetFlag(StatusRegisterFlags.Negative, r);
             registers.SetFlag(StatusRegisterFlags.Overflow, v);
             //TODO: SET FLAG OVERFLOW

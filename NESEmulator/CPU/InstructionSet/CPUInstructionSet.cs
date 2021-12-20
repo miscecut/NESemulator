@@ -580,7 +580,7 @@ namespace NESEmulator.CPU
                 Name = "STA ($aa,X)",
                 RequiredClockCycles = 6,
                 AddressingMode = new IndexedXIndirect(),
-                Operation = new Store(Register.A)
+                Operation = new Store(Register.Accumulator)
             };
             _instructions[0x84] = new Instruction
             {

@@ -15,13 +15,13 @@ namespace NESEmulatorTests.CPU6502.InstructionSet.Operations.StackOperations
             var bus = new BusWithOnlyRAM();
             var registers = new CPURegisters();
 
-            registers.SetStackPointer(0x59);
+            registers.SetRegister(Register.StackPointer, 0x59);
             bus.CPUWrite(0x015A, 0xDE);
 
             new PullAccumulatorFromStack().OperationImmediate(bus, registers);
 
-            Assert.AreEqual(registers.GetStackPointer(), 0x5A);
-            Assert.AreEqual(registers.GetRegister(Register.A), 0xDE);
+            Assert.AreEqual(registers.GetRegister(Register.StackPointer), 0x5A);
+            Assert.AreEqual(registers.GetRegister(Register.Accumulator), 0xDE);
             Assert.IsTrue(registers.GetFlag(StatusRegisterFlags.Negative));
             Assert.IsFalse(registers.GetFlag(StatusRegisterFlags.Zero));
         }

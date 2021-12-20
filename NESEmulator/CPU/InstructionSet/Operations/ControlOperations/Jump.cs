@@ -23,9 +23,9 @@ namespace NESEmulator.CPU.InstructionSet.Operations.ControlOperations
             {
                 registers.DecrementProgramCounter();
                 //the program counter is pushed to the stack
-                bus.CPUWrite((ushort)(0x0100 + registers.GetStackPointer()), BytesUtils.GetHiByte(registers.GetProgramCounter()));
+                bus.CPUWrite((ushort)(0x0100 + registers.GetRegister(Register.StackPointer)), BytesUtils.GetHiByte(registers.GetProgramCounter()));
                 registers.DecrementStackPointer();
-                bus.CPUWrite((ushort)(0x0100 + registers.GetStackPointer()), BytesUtils.GetLoByte(registers.GetProgramCounter()));
+                bus.CPUWrite((ushort)(0x0100 + registers.GetRegister(Register.StackPointer)), BytesUtils.GetLoByte(registers.GetProgramCounter()));
                 registers.DecrementStackPointer();
             }
 

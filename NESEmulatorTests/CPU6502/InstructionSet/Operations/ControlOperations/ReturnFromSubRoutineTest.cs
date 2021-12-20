@@ -2,6 +2,7 @@
 using NESEmulator.Bus;
 using NESEmulator.CPU;
 using NESEmulator.CPU.InstructionSet.Operations.ControlOperations;
+using NESEmulator.CPU.Registers;
 
 namespace NESEmulatorTests.CPU6502.InstructionSet.Operations.ControlOperations
 {
@@ -15,14 +16,14 @@ namespace NESEmulatorTests.CPU6502.InstructionSet.Operations.ControlOperations
             var registers = new CPURegisters();
 
             registers.SetProgramCounter(0x019B);
-            registers.SetStackPointer(0x05);
+            registers.SetRegister(Register.StackPointer, 0x05);
             bus.CPUWrite(0x0106, 0x33);
             bus.CPUWrite(0x0107, 0x22);
 
             new ReturnFromSubRoutine().OperationImmediate(bus, registers);
 
             Assert.AreEqual(registers.GetProgramCounter(), 0x2234);
-            Assert.AreEqual(registers.GetStackPointer(), 0x07);
+            Assert.AreEqual(registers.GetRegister(Register.StackPointer), 0x07);
         }
     }
 }
