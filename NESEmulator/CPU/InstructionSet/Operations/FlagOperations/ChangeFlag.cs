@@ -3,7 +3,7 @@ using NESEmulator.CPU.Registers;
 
 namespace NESEmulator.CPU.InstructionSet.Operations.OperationImplementation
 {
-    public class ChangeFlag : IOperation
+    public class ChangeFlag : ImpliedOperation
     {
         private readonly StatusRegisterFlags _flag;
         private readonly bool _set;
@@ -14,13 +14,7 @@ namespace NESEmulator.CPU.InstructionSet.Operations.OperationImplementation
             _set = set;
         }
 
-        public int OperationImmediate(IBus bus, ICPURegisters registers)
-        {
-            registers.SetFlag(_flag, _set);
-            return 0;
-        }
-
-        public int OperationWithAddress(IBus bus, ICPURegisters registers, ushort address)
+        protected override int OperationImplied(IBus bus, ICPURegisters registers)
         {
             registers.SetFlag(_flag, _set);
             return 0;

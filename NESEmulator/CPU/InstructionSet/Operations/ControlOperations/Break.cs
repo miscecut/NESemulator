@@ -3,9 +3,9 @@ using NESEmulator.CPU.Registers;
 
 namespace NESEmulator.CPU.InstructionSet.Operations.ControlOperations
 {
-    public class Break : IOperation
+    public class Break : ImpliedOperation
     {
-        public int OperationImmediate(IBus bus, ICPURegisters registers)
+        protected override int OperationImplied(IBus bus, ICPURegisters registers)
         {
             //First, it increments the program counter
             registers.IncrementProgramCounter();
@@ -31,11 +31,6 @@ namespace NESEmulator.CPU.InstructionSet.Operations.ControlOperations
             registers.SetProgramCounter(BytesUtils.CombineBytes(hiNewProgramCounter, loNewProgramCounter));
 
             return 0; //it does not require additional cycles
-        }
-
-        public int OperationWithAddress(IBus bus, ICPURegisters registers, ushort address)
-        {
-            return 0;
         }
     }
 }

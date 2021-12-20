@@ -3,14 +3,9 @@ using NESEmulator.CPU.Registers;
 
 namespace NESEmulator.CPU.InstructionSet.Operations.NopOperations
 {
-    public class NOP : IOperation
+    public class NOP : ImpliedOperation
     {
-        public int OperationImmediate(IBus bus, ICPURegisters registers)
-        {
-            return 0;
-        }
-
-        public int OperationWithAddress(IBus bus, ICPURegisters registers, ushort address)
+        protected override int OperationImplied(IBus bus, ICPURegisters registers)
         {
             return 0;
         }

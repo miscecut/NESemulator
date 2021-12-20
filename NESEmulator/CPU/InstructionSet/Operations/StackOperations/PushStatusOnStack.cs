@@ -3,10 +3,10 @@ using NESEmulator.CPU.Registers;
 
 namespace NESEmulator.CPU.InstructionSet.Operations.StackOperations
 {
-    public class PushStatusOnStack : IOperation
+    public class PushStatusOnStack : ImpliedOperation
     {
         //It writes the status register to the stack pointer with the B flag set (and the U)
-        public int OperationImmediate(IBus bus, ICPURegisters registers)
+        protected override int OperationImplied(IBus bus, ICPURegisters registers)
         {
             var previousBreakFlagStatus = registers.GetFlag(StatusRegisterFlags.BRKCommand);
             //First, it sets the U & B flags
@@ -18,11 +18,6 @@ namespace NESEmulator.CPU.InstructionSet.Operations.StackOperations
             //and it resets the previous B flag
             registers.SetFlag(StatusRegisterFlags.BRKCommand, previousBreakFlagStatus);
 
-            return 0;
-        }
-
-        public int OperationWithAddress(IBus bus, ICPURegisters registers, ushort address)
-        {
             return 0;
         }
     }

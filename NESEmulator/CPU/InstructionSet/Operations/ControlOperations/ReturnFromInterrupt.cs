@@ -3,9 +3,9 @@ using NESEmulator.CPU.Registers;
 
 namespace NESEmulator.CPU.InstructionSet.Operations.ControlOperations
 {
-    public class ReturnFromInterrupt : IOperation
+    public class ReturnFromInterrupt : ImpliedOperation
     {
-        public int OperationImmediate(IBus bus, ICPURegisters registers)
+        protected override int OperationImplied(IBus bus, ICPURegisters registers)
         {
             registers.IncrementStackPointer();
             var statusBeforeInterrupt = bus.CPURead((ushort)(registers.GetStackPointer() + 0x0100));
@@ -19,11 +19,6 @@ namespace NESEmulator.CPU.InstructionSet.Operations.ControlOperations
             registers.SetProgramCounter(programCounter);
             registers.SetFlag(StatusRegisterFlags.BRKCommand, false);
 
-            return 0;
-        }
-
-        public int OperationWithAddress(IBus bus, ICPURegisters registers, ushort address)
-        {
             return 0;
         }
     }
