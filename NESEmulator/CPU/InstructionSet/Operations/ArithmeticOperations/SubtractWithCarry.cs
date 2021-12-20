@@ -1,20 +1,21 @@
 ﻿using NESEmulator.CPU.Registers;
 
-namespace NESEmulator.CPU.InstructionSet.Operations.OperationImplementation
+namespace NESEmulator.CPU.InstructionSet.Operations.ArithmeticOperations
 {
-    public class AddWithCarry : RegistersOperation
+    public class SubtractWithCarry : RegistersOperation
     {
         protected override int Operation(ICPURegisters registers, byte operand)
         {
             var carryAddend = registers.GetFlag(StatusRegisterFlags.Carry) ? 1 : 0;
+            var xorOperand = (byte)(operand ^ 0xFF); //THIS IS THE ONLY DIFFERENCE WITH ADDWITHCARRY
 
-            ushort sum = (ushort)(registers.GetRegister(Register.Accumulator) + operand + carryAddend);
+            ushort sum = (ushort)(registers.GetRegister(Register.Accumulator) + xorOperand + carryAddend);
             var oldAccumulatorValue = registers.GetRegister(Register.Accumulator);
             registers.SetRegister(Register.Accumulator, BytesUtils.GetLoByte(sum));
 
             //Setup logic operators for Overflow Flag
             bool a = BytesUtils.GetMSB(oldAccumulatorValue); //sign of the accumulator before sum (first addend)
-            bool m = BytesUtils.GetMSB(operand); //sign of the addend (second addend)
+            bool m = BytesUtils.GetMSB(xorOperand); //sign of the xor addend (second addend)
             bool r = BytesUtils.GetMSB(registers.GetRegister(Register.Accumulator)); //sign of the result
             bool v = (a ^ r) & !(a ^ m);
 

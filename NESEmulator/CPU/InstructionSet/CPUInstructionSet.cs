@@ -5,6 +5,7 @@ using NESEmulator.CPU.InstructionSet.Operations.IncrementDecrementOperations;
 using NESEmulator.CPU.InstructionSet.Operations.LoadOperations;
 using NESEmulator.CPU.InstructionSet.Operations.OperationImplementation;
 using NESEmulator.CPU.InstructionSet.Operations.StackOperations;
+using NESEmulator.CPU.InstructionSet.Operations.TransferOperations;
 using NESEmulator.CPU.Registers;
 using System.Collections.Generic;
 
@@ -613,6 +614,438 @@ namespace NESEmulator.CPU
                 Name = "DEY",
                 RequiredClockCycles = 2,
                 Operation = new ChangeRegisterByOne(Register.Y, false)
+            };
+            _instructions[0x8A] = new Instruction
+            {
+                Opcode = 0x8A,
+                Name = "TXA",
+                RequiredClockCycles = 2,
+                Operation = new TransferBetweenRegisters(Register.X, Register.Accumulator)
+            };
+            _instructions[0x8C] = new Instruction
+            {
+                Opcode = 0x8C,
+                Name = "STY $aaaa",
+                RequiredClockCycles = 4,
+                AddressingMode = new Absolute(),
+                Operation = new Store(Register.Y)
+            };
+            _instructions[0x8D] = new Instruction
+            {
+                Opcode = 0x8D,
+                Name = "STA $aaaa",
+                RequiredClockCycles = 4,
+                AddressingMode = new Absolute(),
+                Operation = new Store(Register.Accumulator)
+            };
+            _instructions[0x8E] = new Instruction
+            {
+                Opcode = 0x8E,
+                Name = "STX $aaaa",
+                RequiredClockCycles = 4,
+                AddressingMode = new Absolute(),
+                Operation = new Store(Register.X)
+            };
+            _instructions[0x90] = new Instruction
+            {
+                Opcode = 0x90,
+                Name = "BCC",
+                RequiredClockCycles = 2,
+                AddressingMode = new Relative(),
+                Operation = new Branch(StatusRegisterFlags.Carry, false)
+            };
+            _instructions[0x91] = new Instruction
+            {
+                Opcode = 0x91,
+                Name = "STA ($aa),Y",
+                RequiredClockCycles = 6,
+                AddressingMode = new IndirectYIndexed(),
+                Operation = new Store(Register.Accumulator)
+            };
+            _instructions[0x94] = new Instruction
+            {
+                Opcode = 0x94,
+                Name = "STY $aa,X",
+                RequiredClockCycles = 4,
+                AddressingMode = new ZeroPageXIndexed(),
+                Operation = new Store(Register.Y)
+            };
+            _instructions[0x95] = new Instruction
+            {
+                Opcode = 0x95,
+                Name = "STA $aa,X",
+                RequiredClockCycles = 4,
+                AddressingMode = new ZeroPageXIndexed(),
+                Operation = new Store(Register.Accumulator)
+            };
+            _instructions[0x96] = new Instruction
+            {
+                Opcode = 0x96,
+                Name = "STX $aa,Y",
+                RequiredClockCycles = 4,
+                AddressingMode = new ZeroPageYIndexed(),
+                Operation = new Store(Register.X)
+            };
+            _instructions[0x98] = new Instruction
+            {
+                Opcode = 0x98,
+                Name = "TYA",
+                RequiredClockCycles = 2,
+                Operation = new TransferBetweenRegisters(Register.Y, Register.Accumulator)
+            };
+            _instructions[0x99] = new Instruction
+            {
+                Opcode = 0x99,
+                Name = "STA $aaaa,Y",
+                RequiredClockCycles = 5,
+                AddressingMode = new AbsoluteYIndexed(),
+                Operation = new Store(Register.Accumulator)
+            };
+            _instructions[0x9A] = new Instruction
+            {
+                Opcode = 0x9A,
+                Name = "TXS",
+                RequiredClockCycles = 2,
+                Operation = new TransferBetweenRegisters(Register.X, Register.StackPointer)
+            };
+            _instructions[0x9D] = new Instruction
+            {
+                Opcode = 0x9D,
+                Name = "STA $aaaa,X",
+                RequiredClockCycles = 5,
+                AddressingMode = new AbsoluteXIndexed(),
+                Operation = new Store(Register.Accumulator)
+            };
+            _instructions[0xA0] = new Instruction
+            {
+                Opcode = 0xA0,
+                Name = "LDY #$aa",
+                RequiredClockCycles = 2,
+                Operation = new Load(Register.Y)
+            };
+            _instructions[0xA1] = new Instruction
+            {
+                Opcode = 0xA1,
+                Name = "LDA ($aa,X)",
+                RequiredClockCycles = 6,
+                AddressingMode = new IndexedXIndirect(),
+                Operation = new Load(Register.Accumulator)
+            };
+            _instructions[0xA2] = new Instruction
+            {
+                Opcode = 0xA2,
+                Name = "LDX #$aa",
+                RequiredClockCycles = 2,
+                Operation = new Load(Register.X)
+            };
+            _instructions[0xA4] = new Instruction
+            {
+                Opcode = 0xA4,
+                Name = "LDY $aa",
+                RequiredClockCycles = 3,
+                AddressingMode = new ZeroPage(),
+                Operation = new Load(Register.Y)
+            };
+            _instructions[0xA5] = new Instruction
+            {
+                Opcode = 0xA5,
+                Name = "LDA $aa",
+                RequiredClockCycles = 3,
+                AddressingMode = new ZeroPage(),
+                Operation = new Load(Register.Accumulator)
+            };
+            _instructions[0xA6] = new Instruction
+            {
+                Opcode = 0xA6,
+                Name = "LDX $aa",
+                RequiredClockCycles = 3,
+                AddressingMode = new ZeroPage(),
+                Operation = new Load(Register.X)
+            };
+            _instructions[0xA8] = new Instruction
+            {
+                Opcode = 0xA8,
+                Name = "TAY",
+                RequiredClockCycles = 2,
+                Operation = new TransferBetweenRegisters(Register.Accumulator, Register.Y)
+            };
+            _instructions[0xA9] = new Instruction
+            {
+                Opcode = 0xA9,
+                Name = "LDA #$aa",
+                RequiredClockCycles = 2,
+                Operation = new Load(Register.Accumulator)
+            };
+            _instructions[0xAA] = new Instruction
+            {
+                Opcode = 0xAA,
+                Name = "TAX",
+                RequiredClockCycles = 2,
+                Operation = new TransferBetweenRegisters(Register.Accumulator, Register.X)
+            };
+            _instructions[0xAC] = new Instruction
+            {
+                Opcode = 0xAC,
+                Name = "LDY $aaaa",
+                RequiredClockCycles = 4,
+                AddressingMode = new Absolute(),
+                Operation = new Load(Register.Y)
+            };
+            _instructions[0xAD] = new Instruction
+            {
+                Opcode = 0xAD,
+                Name = "LDA $aaaa",
+                RequiredClockCycles = 4,
+                AddressingMode = new Absolute(),
+                Operation = new Load(Register.Accumulator)
+            };
+            _instructions[0xAE] = new Instruction
+            {
+                Opcode = 0xAE,
+                Name = "LDX $aaaa",
+                RequiredClockCycles = 4,
+                AddressingMode = new Absolute(),
+                Operation = new Load(Register.X)
+            };
+            _instructions[0xB0] = new Instruction
+            {
+                Opcode = 0xB0,
+                Name = "BCS",
+                RequiredClockCycles = 2,
+                AddressingMode = new Relative(),
+                Operation = new Branch(StatusRegisterFlags.Carry, true)
+            };
+            _instructions[0xB1] = new Instruction
+            {
+                Opcode = 0xB1,
+                Name = "LDY ($aa),Y",
+                RequiredClockCycles = 5,
+                AddressingMode = new IndirectYIndexed(),
+                Operation = new Load(Register.Y)
+            };
+            _instructions[0xB4] = new Instruction
+            {
+                Opcode = 0xB4,
+                Name = "LDY $aa,X",
+                RequiredClockCycles = 4,
+                AddressingMode = new ZeroPageXIndexed(),
+                Operation = new Load(Register.Y)
+            };
+            _instructions[0xB5] = new Instruction
+            {
+                Opcode = 0xB5,
+                Name = "LDA $aa,X",
+                RequiredClockCycles = 4,
+                AddressingMode = new ZeroPageXIndexed(),
+                Operation = new Load(Register.Accumulator)
+            };
+            _instructions[0xB6] = new Instruction
+            {
+                Opcode = 0xB6,
+                Name = "LDX $aa,Y",
+                RequiredClockCycles = 4,
+                AddressingMode = new ZeroPageYIndexed(),
+                Operation = new Load(Register.X)
+            };
+            _instructions[0xB8] = new Instruction
+            {
+                Opcode = 0xB8,
+                Name = "CLV",
+                RequiredClockCycles = 2,
+                Operation = new ChangeFlag(StatusRegisterFlags.Overflow, false)
+            };
+            _instructions[0xB9] = new Instruction
+            {
+                Opcode = 0xB9,
+                Name = "LDA $aaaa,Y",
+                RequiredClockCycles = 4,
+                AddressingMode = new AbsoluteYIndexed(),
+                Operation = new Load(Register.Accumulator)
+            };
+            _instructions[0xBA] = new Instruction
+            {
+                Opcode = 0xBA,
+                Name = "TSX",
+                RequiredClockCycles = 2,
+                Operation = new TransferBetweenRegisters(Register.StackPointer, Register.X)
+            };
+            _instructions[0xBC] = new Instruction
+            {
+                Opcode = 0xBC,
+                Name = "LDY $aaaa,X",
+                RequiredClockCycles = 4,
+                AddressingMode = new AbsoluteXIndexed(),
+                Operation = new Load(Register.Y)
+            };
+            _instructions[0xBD] = new Instruction
+            {
+                Opcode = 0xBD,
+                Name = "LDA $aaaa,X",
+                RequiredClockCycles = 4,
+                AddressingMode = new AbsoluteXIndexed(),
+                Operation = new Load(Register.Accumulator)
+            };
+            _instructions[0xBE] = new Instruction
+            {
+                Opcode = 0xBE,
+                Name = "LDX $aaaa,Y",
+                RequiredClockCycles = 4,
+                AddressingMode = new AbsoluteYIndexed(),
+                Operation = new Load(Register.X)
+            };
+            _instructions[0xC0] = new Instruction
+            {
+                Opcode = 0xC0,
+                Name = "CPY #$aa",
+                RequiredClockCycles = 2,
+                Operation = new Compare(Register.Y)
+            };
+            _instructions[0xC1] = new Instruction
+            {
+                Opcode = 0xC1,
+                Name = "CMP ($aa,X)",
+                RequiredClockCycles = 6,
+                AddressingMode = new IndexedXIndirect(),
+                Operation = new Compare(Register.Accumulator)
+            };
+            _instructions[0xC4] = new Instruction
+            {
+                Opcode = 0xC4,
+                Name = "CPY $aa",
+                RequiredClockCycles = 3,
+                AddressingMode = new ZeroPage(),
+                Operation = new Compare(Register.Y)
+            };
+            _instructions[0xC5] = new Instruction
+            {
+                Opcode = 0xC5,
+                Name = "CMP $aa",
+                RequiredClockCycles = 3,
+                AddressingMode = new ZeroPage(),
+                Operation = new Compare(Register.Accumulator)
+            };
+            _instructions[0xC6] = new Instruction
+            {
+                Opcode = 0xC6,
+                Name = "DEC $aa",
+                RequiredClockCycles = 5,
+                AddressingMode = new ZeroPage(),
+                Operation = new ChangeMemoryByOne(false)
+            };
+            _instructions[0xC8] = new Instruction
+            {
+                Opcode = 0xC8,
+                Name = "INY",
+                RequiredClockCycles = 2,
+                Operation = new ChangeRegisterByOne(Register.Y, true)
+            };
+            _instructions[0xC9] = new Instruction
+            {
+                Opcode = 0xC9,
+                Name = "CMP #$aa",
+                RequiredClockCycles = 2,
+                Operation = new Compare(Register.Accumulator)
+            };
+            _instructions[0xCA] = new Instruction
+            {
+                Opcode = 0xCA,
+                Name = "DEX",
+                RequiredClockCycles = 2,
+                Operation = new ChangeRegisterByOne(Register.X, false)
+            };
+            _instructions[0xCC] = new Instruction
+            {
+                Opcode = 0xCC,
+                Name = "CPY $aaaa",
+                RequiredClockCycles = 4,
+                AddressingMode = new Absolute(),
+                Operation = new Compare(Register.Y)
+            };
+            _instructions[0xCD] = new Instruction
+            {
+                Opcode = 0xCD,
+                Name = "CMP $aaaa",
+                RequiredClockCycles = 4,
+                AddressingMode = new Absolute(),
+                Operation = new Compare(Register.Accumulator)
+            };
+            _instructions[0xCE] = new Instruction
+            {
+                Opcode = 0xCE,
+                Name = "DEC $aaaa",
+                RequiredClockCycles = 6,
+                AddressingMode = new Absolute(),
+                Operation = new ChangeMemoryByOne(false)
+            };
+            _instructions[0xD0] = new Instruction
+            {
+                Opcode = 0xD0,
+                Name = "BNE",
+                RequiredClockCycles = 2,
+                AddressingMode = new Relative(),
+                Operation = new Branch(StatusRegisterFlags.Zero, false)
+            };
+            _instructions[0xD1] = new Instruction
+            {
+                Opcode = 0xD1,
+                Name = "CMP ($aa),Y",
+                RequiredClockCycles = 5,
+                AddressingMode = new IndirectYIndexed(),
+                Operation = new Compare(Register.Accumulator)
+            };
+            _instructions[0xD5] = new Instruction
+            {
+                Opcode = 0xD5,
+                Name = "CMP $aa,X",
+                RequiredClockCycles = 4,
+                AddressingMode = new ZeroPageXIndexed(),
+                Operation = new Compare(Register.Accumulator)
+            };
+            _instructions[0xD6] = new Instruction
+            {
+                Opcode = 0xD6,
+                Name = "DEC $aa",
+                RequiredClockCycles = 6,
+                AddressingMode = new ZeroPageXIndexed(),
+                Operation = new ChangeMemoryByOne(false)
+            };
+            _instructions[0xD8] = new Instruction
+            {
+                Opcode = 0xD8,
+                Name = "CLD",
+                RequiredClockCycles = 2,
+                Operation = new ChangeFlag(StatusRegisterFlags.DecimalMode, false)
+            };
+            _instructions[0xD9] = new Instruction
+            {
+                Opcode = 0xD9,
+                Name = "CMP $aaaa,Y",
+                RequiredClockCycles = 4,
+                AddressingMode = new AbsoluteYIndexed(),
+                Operation = new Compare(Register.Accumulator)
+            };
+            _instructions[0xDD] = new Instruction
+            {
+                Opcode = 0xDD,
+                Name = "CMP $aaaa,X",
+                RequiredClockCycles = 4,
+                AddressingMode = new AbsoluteXIndexed(),
+                Operation = new Compare(Register.Accumulator)
+            };
+            _instructions[0xDE] = new Instruction
+            {
+                Opcode = 0xDE,
+                Name = "DEC $aaaa,X",
+                RequiredClockCycles = 7,
+                AddressingMode = new AbsoluteXIndexed(),
+                Operation = new ChangeMemoryByOne(false)
+            };
+            _instructions[0xE0] = new Instruction
+            {
+                Opcode = 0xE0,
+                Name = "CPX #$aa",
+                RequiredClockCycles = 2,
+                Operation = new Compare(Register.X)
             };
         }
 
