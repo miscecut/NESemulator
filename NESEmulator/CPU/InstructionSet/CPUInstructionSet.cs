@@ -1,6 +1,7 @@
 ﻿using NESEmulator.CPU.InstructionSet.AddressingModes.AddressingModeImplementations;
 using NESEmulator.CPU.InstructionSet.Operations.BranchOperations;
 using NESEmulator.CPU.InstructionSet.Operations.ControlOperations;
+using NESEmulator.CPU.InstructionSet.Operations.IncrementDecrementOperations;
 using NESEmulator.CPU.InstructionSet.Operations.LoadOperations;
 using NESEmulator.CPU.InstructionSet.Operations.OperationImplementation;
 using NESEmulator.CPU.InstructionSet.Operations.StackOperations;
@@ -589,6 +590,29 @@ namespace NESEmulator.CPU
                 RequiredClockCycles = 3,
                 AddressingMode = new ZeroPage(),
                 Operation = new Store(Register.Y)
+            };
+            _instructions[0x85] = new Instruction
+            {
+                Opcode = 0x85,
+                Name = "STA $aa",
+                RequiredClockCycles = 3,
+                AddressingMode = new ZeroPage(),
+                Operation = new Store(Register.Accumulator)
+            };
+            _instructions[0x86] = new Instruction
+            {
+                Opcode = 0x86,
+                Name = "STX $aa",
+                RequiredClockCycles = 3,
+                AddressingMode = new ZeroPage(),
+                Operation = new Store(Register.X)
+            };
+            _instructions[0x88] = new Instruction
+            {
+                Opcode = 0x88,
+                Name = "DEY",
+                RequiredClockCycles = 2,
+                Operation = new ChangeRegisterByOne(Register.Y, false)
             };
         }
 
