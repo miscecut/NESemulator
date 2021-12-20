@@ -1,13 +1,15 @@
 ﻿using NESEmulator.CPU.Registers;
+using System;
 
 namespace NESEmulator.CPU.InstructionSet.Operations.ArithmeticOperations
 {
     public class SubtractWithCarry : RegistersOperation
     {
+        //A = A - M - (1 - C) =  A + ~M + 1 - 1 + C = A + ~M + C
         protected override int Operation(ICPURegisters registers, byte operand)
         {
             var carryAddend = registers.GetFlag(StatusRegisterFlags.Carry) ? 1 : 0;
-            var xorOperand = (byte)(operand ^ 0xFF); //THIS IS THE ONLY DIFFERENCE WITH ADDWITHCARRY
+            var xorOperand = (byte)(operand ^ 0xFF); //This inverts M
 
             ushort sum = (ushort)(registers.GetRegister(Register.Accumulator) + xorOperand + carryAddend);
             var oldAccumulatorValue = registers.GetRegister(Register.Accumulator);
