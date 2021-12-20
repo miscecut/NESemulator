@@ -3,7 +3,7 @@ using NESEmulator.CPU.Registers;
 
 namespace NESEmulator.CPU.InstructionSet.Operations.NopOperations
 {
-    public class NOP : ImpliedOperation
+    public class Nop : ImpliedOperation
     {
         protected override int OperationImplied(IBus bus, ICPURegisters registers)
         {

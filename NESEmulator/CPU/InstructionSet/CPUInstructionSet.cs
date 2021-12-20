@@ -1,8 +1,10 @@
 ﻿using NESEmulator.CPU.InstructionSet.AddressingModes.AddressingModeImplementations;
+using NESEmulator.CPU.InstructionSet.Operations.ArithmeticOperations;
 using NESEmulator.CPU.InstructionSet.Operations.BranchOperations;
 using NESEmulator.CPU.InstructionSet.Operations.ControlOperations;
 using NESEmulator.CPU.InstructionSet.Operations.IncrementDecrementOperations;
 using NESEmulator.CPU.InstructionSet.Operations.LoadOperations;
+using NESEmulator.CPU.InstructionSet.Operations.NopOperations;
 using NESEmulator.CPU.InstructionSet.Operations.OperationImplementation;
 using NESEmulator.CPU.InstructionSet.Operations.StackOperations;
 using NESEmulator.CPU.InstructionSet.Operations.TransferOperations;
@@ -1046,6 +1048,154 @@ namespace NESEmulator.CPU
                 Name = "CPX #$aa",
                 RequiredClockCycles = 2,
                 Operation = new Compare(Register.X)
+            };
+            _instructions[0xE1] = new Instruction
+            {
+                Opcode = 0xE1,
+                Name = "SBC ($aa,X)",
+                RequiredClockCycles = 6,
+                AddressingMode = new IndexedXIndirect(),
+                Operation = new SubtractWithCarry()
+            };
+            _instructions[0xE4] = new Instruction
+            {
+                Opcode = 0xE4,
+                Name = "CPX $aa",
+                RequiredClockCycles = 3,
+                AddressingMode = new ZeroPage(),
+                Operation = new Compare(Register.X)
+            };
+            _instructions[0xE5] = new Instruction
+            {
+                Opcode = 0xE5,
+                Name = "SBC $aa",
+                RequiredClockCycles = 3,
+                AddressingMode = new ZeroPage(),
+                Operation = new SubtractWithCarry()
+            };
+            _instructions[0xE6] = new Instruction
+            {
+                Opcode = 0xE6,
+                Name = "INC $aa",
+                RequiredClockCycles = 5,
+                AddressingMode = new ZeroPage(),
+                Operation = new ChangeMemoryByOne(true)
+            };
+            _instructions[0xE8] = new Instruction
+            {
+                Opcode = 0xE8,
+                Name = "INX",
+                RequiredClockCycles = 2,
+                Operation = new ChangeRegisterByOne(Register.X, true)
+            };
+            _instructions[0xE9] = new Instruction
+            {
+                Opcode = 0xE9,
+                Name = "SBC #$aa",
+                RequiredClockCycles = 2,
+                Operation = new SubtractWithCarry()
+            };
+            _instructions[0xEA] = new Instruction
+            {
+                Opcode = 0xEA,
+                Name = "NOP",
+                RequiredClockCycles = 2,
+                Operation = new Nop()
+            };
+            _instructions[0xEC] = new Instruction
+            {
+                Opcode = 0xEC,
+                Name = "CPX $aaaa",
+                RequiredClockCycles = 4,
+                AddressingMode = new Absolute(),
+                Operation = new Compare(Register.X)
+            };
+            _instructions[0xED] = new Instruction
+            {
+                Opcode = 0xED,
+                Name = "SBC $aaaa",
+                RequiredClockCycles = 4,
+                AddressingMode = new Absolute(),
+                Operation = new SubtractWithCarry()
+            };
+            _instructions[0xEE] = new Instruction
+            {
+                Opcode = 0xEE,
+                Name = "INC $aaaa",
+                RequiredClockCycles = 2,
+                AddressingMode = new Absolute(),
+                Operation = new ChangeMemoryByOne(true)
+            };
+            _instructions[0xEE] = new Instruction
+            {
+                Opcode = 0xEE,
+                Name = "INC $aaaa",
+                RequiredClockCycles = 6,
+                AddressingMode = new Absolute(),
+                Operation = new ChangeMemoryByOne(true)
+            };
+            _instructions[0xF0] = new Instruction
+            {
+                Opcode = 0xF0,
+                Name = "BEQ",
+                RequiredClockCycles = 2,
+                AddressingMode = new Relative(),
+                Operation = new Branch(StatusRegisterFlags.Zero, true)
+            };
+            _instructions[0xF1] = new Instruction
+            {
+                Opcode = 0xF1,
+                Name = "SBC ($aa),Y",
+                RequiredClockCycles = 5,
+                AddressingMode = new IndirectYIndexed(),
+                Operation = new SubtractWithCarry()
+            };
+            _instructions[0xF5] = new Instruction
+            {
+                Opcode = 0xF5,
+                Name = "SBC $aa,X",
+                RequiredClockCycles = 4,
+                AddressingMode = new ZeroPageXIndexed(),
+                Operation = new SubtractWithCarry()
+            };
+            _instructions[0xF6] = new Instruction
+            {
+                Opcode = 0xF6,
+                Name = "INC $aa,X",
+                RequiredClockCycles = 6,
+                AddressingMode = new ZeroPageXIndexed(),
+                Operation = new ChangeMemoryByOne(true)
+            };
+            _instructions[0xF8] = new Instruction
+            {
+                Opcode = 0xF8,
+                Name = "SED",
+                RequiredClockCycles = 2,
+                Operation = new ChangeFlag(StatusRegisterFlags.DecimalMode, true)
+            };
+            _instructions[0xF9] = new Instruction
+            {
+                Opcode = 0xF9,
+                Name = "SBC $aaaa,Y",
+                RequiredClockCycles = 4,
+                AddressingMode = new AbsoluteYIndexed(),
+                Operation = new SubtractWithCarry()
+            };
+            _instructions[0xFD] = new Instruction
+            {
+                Opcode = 0xFD,
+                Name = "SBC $aaaa,X",
+                RequiredClockCycles = 4,
+                AddressingMode = new AbsoluteXIndexed(),
+                Operation = new SubtractWithCarry()
+            };
+            _instructions[0xFE] = new Instruction
+            {
+                Opcode = 0xF6,
+                Name = "INC $aaaa,X",
+                RequiredClockCycles = 7,
+                AddressingMode = new AbsoluteXIndexed(),
+                Operation = new ChangeMemoryByOne(true)
             };
         }
 
