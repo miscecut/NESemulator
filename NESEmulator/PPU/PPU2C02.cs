@@ -1,15 +1,20 @@
 ﻿using NESEmulator.Cartridge;
+using NESEmulator.PPU.PaletteMemory;
 
 namespace NESEmulator.PPU
 {
     public class PPU2C02 : IPPU
     {
+        private readonly IPaletteMemory _paletteMemory;
+        private readonly ICartridge _cartridge;
+        //utils for drawing the screen
         private int _scanLine;
         private int _cycles;
         private bool _frameComplete;
 
         public PPU2C02()
         {
+            _paletteMemory = new NESPaletteMemory();
         }
 
         public void Clock()
@@ -44,12 +49,27 @@ namespace NESEmulator.PPU
 
         public byte PPURead(ushort address)
         {
-            throw new System.NotImplementedException();
+            byte retrievedData = 0x00;
+            //The cartridge has first dibs on what the PPU is trying to read on the cartridge
+            if (_cartridge.PPURead(address, ref retrievedData))
+                return retrievedData;
+
+            if (0x3F00 <= address && address < 0x4000)
+                return _paletteMemory.Read(address);
+
+            return 0x00;
         }
 
         public void PPUWrite(ushort address, byte data)
         {
-            throw new System.NotImplementedException();
+            //The cartridge has first dibs on what the PPU is trying to write on the cartridge
+            var cartridgeWritten = _cartridge.PPUWrite(address, data);
+
+            if(!cartridgeWritten)
+            {
+                if (0x3F00 <= address && address < 0x4000)
+                    _paletteMemory.Write(address, data);
+            }
         }
     }
 }
