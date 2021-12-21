@@ -1,4 +1,6 @@
-﻿namespace NESEmulator.PPU
+﻿using NESEmulator.Cartridge;
+
+namespace NESEmulator.PPU
 {
     public interface IPPU
     {
@@ -8,6 +10,8 @@
         //Communication with PPU's bus
         public byte PPURead(ushort address);
         public void PPUWrite(ushort address, byte data);
+        //cartridge insertion
+        public void InsertCartridge(ICartridge cartridge);
         //clock signal
         public void Clock();
     }

@@ -34,14 +34,19 @@ namespace NESEmulator.CPU
             _remainingCycles -= 1;
         }
 
-        public void IRQ()
+        public void InterruptRequest()
         {
-            throw new System.NotImplementedException();
+            if (!_registers.GetFlag(StatusRegisterFlags.IRQDisable))
+            {
+                _remainingCycles = 7;
+                HandleInterrupt(0xFFFE);
+            }
         }
 
-        public void NMI()
+        public void NonMaskeableInterrupt()
         {
-            throw new System.NotImplementedException();
+            _remainingCycles = 8;
+            HandleInterrupt(0xFFFA);
         }
 
         public void Reset()
@@ -50,6 +55,28 @@ namespace NESEmulator.CPU
             _registers.Reset();
             var loAddress = _bus.CPURead(0xFFFC);
             var hiAddress = _bus.CPURead(0xFFFD);
+            _registers.SetProgramCounter(BytesUtils.CombineBytes(hiAddress, loAddress));
+        }
+
+        private void HandleInterrupt(ushort newProgramCounterAddress)
+        {
+            //First, it writes the current program counter to the stack
+            var currentProgramCounter = _registers.GetProgramCounter();
+            _bus.CPUWrite((ushort)(0x0100 + _registers.GetRegister(Register.StackPointer)), BytesUtils.GetHiByte(currentProgramCounter));
+            _registers.DecrementStackPointer();
+            _bus.CPUWrite((ushort)(0x0100 + _registers.GetRegister(Register.StackPointer)), BytesUtils.GetLoByte(currentProgramCounter));
+            _registers.DecrementStackPointer();
+
+            //Then it saves the status register on the stack
+            _registers.SetFlag(StatusRegisterFlags.BRKCommand, false);
+            _registers.SetFlag(StatusRegisterFlags.Unused, true);
+            _registers.SetFlag(StatusRegisterFlags.IRQDisable, true); //It indicates that an interrupt has occurred
+            _bus.CPUWrite((ushort)(0x0100 + _registers.GetRegister(Register.StackPointer)), _registers.GetStatus());
+            _registers.DecrementStackPointer();
+
+            //Finally, it forces the program counter to jump to a know location in the memory
+            var loAddress = _bus.CPURead(newProgramCounterAddress);
+            var hiAddress = _bus.CPURead((ushort)(newProgramCounterAddress + 1));
             _registers.SetProgramCounter(BytesUtils.CombineBytes(hiAddress, loAddress));
         }
     }

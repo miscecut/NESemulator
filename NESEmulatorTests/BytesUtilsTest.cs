@@ -58,5 +58,15 @@ namespace NESEmulatorTests
             Assert.IsTrue(BytesUtils.GetMSB(0b10000111));
             Assert.IsFalse(BytesUtils.GetMSB(0b00000111));
         }
+
+        [TestMethod]
+        public void TestSubArray()
+        {
+            byte[] data = {0x43, 0x45, 0xBB, 0xA5, 0xF1, 0x06};
+            var subData = BytesUtils.GetByteRange(data, 1, 4);
+            Assert.AreEqual(subData.Length, 3);
+            Assert.AreEqual(subData[0], 0x45);
+            Assert.AreEqual(subData[2], 0xA5);
+        }
     }
 }

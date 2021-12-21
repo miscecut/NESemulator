@@ -4,7 +4,7 @@
     {
         public void Clock();
         public void Reset();
-        public void NMI();
-        public void IRQ();
+        public void NonMaskeableInterrupt();
+        public void InterruptRequest();
     }
 }

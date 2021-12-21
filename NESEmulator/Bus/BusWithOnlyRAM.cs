@@ -1,4 +1,5 @@
 ﻿using NESEmulator.Cartridge;
+using NESEmulator.CPU;
 using NESEmulator.RAM;
 namespace NESEmulator.Bus
 {
@@ -6,10 +7,23 @@ namespace NESEmulator.Bus
     public class BusWithOnlyRAM : IBus
     {
         private IRAM _ram;
+        private ICPU _cpu;
+
+        public BusWithOnlyRAM(ICPU cpu)
+        {
+            _ram = new NormalRAM();
+            _cpu = cpu;
+        }
 
         public BusWithOnlyRAM()
         {
             _ram = new NormalRAM();
+            _cpu = new NMOS6502(this, new CPURegisters());
+        }
+
+        public void Clock()
+        {
+            _cpu.Clock();
         }
 
         public byte CPURead(ushort address)
@@ -29,7 +43,7 @@ namespace NESEmulator.Bus
 
         public void Reset()
         {
-            return;
+            _cpu.Reset();
         }
     }
 }

@@ -7,5 +7,7 @@ namespace NESEmulator.Bus
         public byte CPURead(ushort address); //ONLY the CPU reads and writes from the bus
         public void CPUWrite(ushort address, byte data);
         public void InsertCartridge(ICartridge cartridge);
+        public void Clock();
+        public void Reset();
     }
 }

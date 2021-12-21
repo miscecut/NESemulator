@@ -3,10 +3,10 @@
    public  interface ICartridge
     {
         //Communication with mCPU
-        public byte CPURead(ushort address);
-        public void CPUWrite(ushort address, byte data);
+        public bool CPURead(ushort address, ref byte data); //returns true if the data requested was actually from the catridge (in this case, the data is returned by reference)
+        public bool CPUWrite(ushort address, byte data);
         //Communication with PPU
-        public byte PPURead(ushort address);
-        public void PPUWrite(ushort address, byte data);
+        public bool PPURead(ushort address, ref byte data);
+        public bool PPUWrite(ushort address, byte data);
     }
 }

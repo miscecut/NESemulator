@@ -34,5 +34,14 @@ namespace NESEmulator
         {
             return CombineBytes(0x00, (byte)(addend1 + addend2));
         }
+
+        //returns a sub array of bytes starting from start to end (start including, end excluded)
+        public static byte[] GetByteRange(byte[] data, int start, int end)
+        {
+            var subArrayLength = end - start;
+            byte[] subData = new byte[subArrayLength];
+            Array.Copy(data, start, subData, 0, subArrayLength);
+            return subData;
+        }
     }
 }

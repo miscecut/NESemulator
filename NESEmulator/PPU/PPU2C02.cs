@@ -1,25 +1,43 @@
-﻿namespace NESEmulator.PPU
+﻿using NESEmulator.Cartridge;
+
+namespace NESEmulator.PPU
 {
     public class PPU2C02 : IPPU
     {
-        private readonly byte[] _registers;
+        private int _scanLine;
+        private int _cycles;
+        private bool _frameComplete;
 
         public PPU2C02()
         {
-            _registers = new byte[8];
         }
 
         public void Clock()
         {
-            throw new System.NotImplementedException();
+            _cycles++;
+            if(_cycles >= 341)
+            {
+                _cycles = 0;
+                _scanLine++;
+                if(_scanLine >= 261)
+                {
+                    _scanLine = -1;
+                    _frameComplete = true;
+                }
+            }
         }
 
         public byte CPURead(ushort address)
         {
-            return _registers[address & 0x0003];
+            return 0;
         }
 
         public void CPUWrite(ushort address, byte data)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void InsertCartridge(ICartridge cartridge)
         {
             throw new System.NotImplementedException();
         }

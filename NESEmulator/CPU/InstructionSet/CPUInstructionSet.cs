@@ -1191,7 +1191,7 @@ namespace NESEmulator.CPU
             };
             _instructions[0xFE] = new Instruction
             {
-                Opcode = 0xF6,
+                Opcode = 0xFE,
                 Name = "INC $aaaa,X",
                 RequiredClockCycles = 7,
                 AddressingMode = new AbsoluteXIndexed(),
