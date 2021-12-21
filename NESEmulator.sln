@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.31911.196
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NESEmulator", "NESEmulator\NESEmulator.csproj", "{A2953309-C28B-4F6F-8B31-AAE687D18A2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NESEmulatorTests", "NESEmulatorTests\NESEmulatorTests.csproj", "{1379EA0A-F348-47CC-A28D-0F4C1127420A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NESEmulatorTests", "NESEmulatorTests\NESEmulatorTests.csproj", "{1379EA0A-F348-47CC-A28D-0F4C1127420A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NESScreen", "NESScreen\NESScreen.csproj", "{01FD439F-5332-48FE-83FC-3BEADF606DE6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{1379EA0A-F348-47CC-A28D-0F4C1127420A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1379EA0A-F348-47CC-A28D-0F4C1127420A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1379EA0A-F348-47CC-A28D-0F4C1127420A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01FD439F-5332-48FE-83FC-3BEADF606DE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01FD439F-5332-48FE-83FC-3BEADF606DE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01FD439F-5332-48FE-83FC-3BEADF606DE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01FD439F-5332-48FE-83FC-3BEADF606DE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

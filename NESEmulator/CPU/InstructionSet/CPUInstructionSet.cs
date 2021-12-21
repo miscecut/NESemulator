@@ -17,9 +17,17 @@ namespace NESEmulator.CPU
     {
         //A map opcode -> instruction (every instruction has a different opcode which identifies it)
         private readonly IDictionary<byte, Instruction> _instructions;
+        private readonly Instruction _nop;
 
         public CPUInstructionSet()
         {
+            _nop = new Instruction
+            {
+                Name = "NOP",
+                RequiredClockCycles = 2,
+                Operation = new Nop()
+            };
+
             _instructions = new Dictionary<byte, Instruction>();
             //The instructions are in opcode-order
             _instructions[0x00] = new Instruction
@@ -1201,7 +1209,9 @@ namespace NESEmulator.CPU
 
         public Instruction GetInstruction(byte opcode)
         {
-            return _instructions[opcode];
+            if(_instructions.ContainsKey(opcode))
+                return _instructions[opcode];
+            return _nop;
         }
     }
 }
