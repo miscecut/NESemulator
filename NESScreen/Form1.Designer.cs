@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace NESScreen
 {
-    partial class Form1
+    partial class NESView
     {
         /// <summary>
         ///  Required designer variable.
@@ -31,32 +31,49 @@ namespace NESScreen
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.NES_screen_output = new System.Windows.Forms.PictureBox();
+            this.button1 = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.NES_screen_output)).BeginInit();
             this.SuspendLayout();
             // 
-            // panel1
+            // NES_screen_output
             // 
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(512, 480);
-            this.panel1.TabIndex = 0;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            this.NES_screen_output.Location = new System.Drawing.Point(0, 0);
+            this.NES_screen_output.Name = "NES_screen_output";
+            this.NES_screen_output.Size = new System.Drawing.Size(256, 240);
+            this.NES_screen_output.TabIndex = 0;
+            this.NES_screen_output.TabStop = false;
             // 
-            // Form1
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(489, 191);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.StartEmulation);
+            // 
+            // NESView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(966, 665);
-            this.Controls.Add(this.panel1);
-            this.Name = "Form1";
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.NES_screen_output);
+            this.Name = "NESView";
             this.Text = "NES Emulator";
+            ((System.ComponentModel.ISupportInitialize)(this.NES_screen_output)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.PictureBox NES_screen_output;
+        private System.Windows.Forms.Button button1;
     }
 }
 
